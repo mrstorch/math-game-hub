@@ -6,162 +6,257 @@
 <title>Scale the Storch!</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-    body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(to bottom, #87ceeb, #ffffff);
-        margin: 0;
-        padding: 20px;
-        text-align: center;
-    }
+body{
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#4fc3f7,#ffffff);
+    padding:20px;
+}
 
-    .container {
-        max-width: 800px;
-        margin: auto;
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 0 20px rgba(0,0,0,.2);
-    }
+.container{
+    max-width:850px;
+    margin:auto;
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 0 20px rgba(0,0,0,.2);
+}
 
-    h1 {
-        color: #ff6600;
-        margin-bottom: 5px;
-    }
+h1{
+    text-align:center;
+    color:#ff6f00;
+    margin-bottom:5px;
+}
 
-    h2 {
-        color: #004a99;
-        margin-top: 0;
-    }
+.subtitle{
+    text-align:center;
+    color:#1565c0;
+    margin-bottom:20px;
+    font-weight:bold;
+}
 
-    .scoreboard {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        margin: 20px 0;
-        font-weight: bold;
-        font-size: 1.1em;
-    }
+.instructions{
+    background:#fff8e1;
+    border:2px solid #ffd54f;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:20px;
+    line-height:1.5;
+}
 
-    .card {
-        background: #f4f8ff;
-        padding: 20px;
-        border-radius: 12px;
-        margin: 20px 0;
-        border: 2px solid #d0e3ff;
-    }
+.instructions h3{
+    margin-bottom:10px;
+    color:#e65100;
+}
 
-    .value {
-        font-size: 2em;
-        color: #004a99;
-        margin: 10px;
-    }
+.scoreboard{
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+    gap:10px;
+}
 
-    button {
-        background: #ff6600;
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        font-size: 1em;
-        border-radius: 8px;
-        cursor: pointer;
-        margin: 8px;
-    }
+.score-box{
+    background:#e3f2fd;
+    border-radius:10px;
+    padding:12px;
+    min-width:140px;
+    text-align:center;
+    font-weight:bold;
+}
 
-    button:hover {
-        background: #e05500;
-    }
+.game-card{
+    background:#f7faff;
+    border:2px solid #bbdefb;
+    border-radius:15px;
+    padding:25px;
+    text-align:center;
+}
 
-    input {
-        padding: 10px;
-        font-size: 1.1em;
-        width: 180px;
-        text-align: center;
-    }
+.value{
+    font-size:2.4rem;
+    color:#0d47a1;
+    margin:10px 0 20px;
+    font-weight:bold;
+}
 
-    #feedback {
-        margin-top: 15px;
-        font-size: 1.1em;
-        font-weight: bold;
-    }
+button{
+    background:#ff6f00;
+    color:white;
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    font-size:1rem;
+    cursor:pointer;
+    margin:5px;
+}
 
-    #explanation {
-        margin-top: 15px;
-        background: #fff8e6;
-        padding: 15px;
-        border-radius: 10px;
-    }
+button:hover{
+    background:#e65100;
+}
 
-    #gameOver {
-        display: none;
-        margin-top: 25px;
-    }
+input{
+    padding:12px;
+    width:180px;
+    text-align:center;
+    font-size:1.1rem;
+    border:2px solid #90caf9;
+    border-radius:8px;
+}
 
-    .badge {
-        font-size: 1.5em;
-        margin-top: 10px;
-    }
+.correct{
+    color:green;
+    font-weight:bold;
+}
 
-    .correct {
-        color: green;
-    }
+.incorrect{
+    color:red;
+    font-weight:bold;
+}
 
-    .wrong {
-        color: red;
-    }
+#feedback,
+#explanation,
+#bonusMessage{
+    margin-top:15px;
+}
+
+#bonusMessage{
+    font-size:1.3rem;
+    font-weight:bold;
+    color:#6a1b9a;
+}
+
+#gameOver{
+    display:none;
+    text-align:center;
+    margin-top:25px;
+}
+
+.badge{
+    font-size:1.7rem;
+    margin-top:15px;
+}
+
+.rollButton{
+    font-size:1.1rem;
+}
+
+.questionArea{
+    margin-top:20px;
+}
+
+.hidden{
+    display:none;
+}
 </style>
 </head>
 <body>
 
 <div class="container">
 
-    <h1>🎲 Scale the Storch! 📐</h1>
-    <h2>Roll. Scale. Score.</h2>
+<h1>🎲 Scale the Storch! 📐</h1>
+<div class="subtitle">Roll • Scale • Score • Build Your Streak</div>
 
-    <div class="scoreboard">
-        <div>Round: <span id="round">1</span>/10</div>
-        <div>Score: <span id="score">0</span></div>
-    </div>
+<div class="instructions">
+<h3>How to Score</h3>
 
-    <button id="rollButton" onclick="newRound()">Roll Dice</button>
+✅ Every correct answer earns <strong>10 points</strong>.
 
-    <div class="card">
-        <div>
-            Original Length
-            <div id="length" class="value">?</div>
-        </div>
+🔥 Get <strong>3 correct answers in a row</strong> to unlock a Bonus Scale Roll.
 
-        <div>
-            Scale Factor
-            <div id="factor" class="value">?</div>
-        </div>
-    </div>
+🎲 The Bonus Scale Factor can be:
+<ul>
+<li>½</li>
+<li>1</li>
+<li>1½</li>
+<li>2</li>
+</ul>
 
-    <p><strong>What is the scaled length?</strong></p>
+Your points for that turn are multiplied by the Bonus Scale Factor.
 
-    <input type="text" id="answer" placeholder="Enter answer">
+Example:
+<ul>
+<li>Correct Answer = 10 points</li>
+<li>Bonus Roll = 1½</li>
+<li>Total for that round = 15 points</li>
+</ul>
 
-    <br>
+Every time you reach a new streak of 3, 6, or 9 correct answers in a row,
+you earn another Bonus Scale Roll!
+</div>
 
-    <button onclick="checkAnswer()">Submit Answer</button>
+<div class="scoreboard">
 
-    <div id="feedback"></div>
-    <div id="explanation"></div>
+<div class="score-box">
+Round<br>
+<span id="round">1</span>/10
+</div>
 
-    <div id="gameOver">
-        <h2>Game Complete!</h2>
+<div class="score-box">
+Score<br>
+<span id="score">0</span>
+</div>
 
-        <p>Your Final Score:</p>
+<div class="score-box">
+Current Streak<br>
+<span id="streak">0</span>
+</div>
 
-        <h1 id="finalScore"></h1>
+</div>
 
-        <div id="badge" class="badge"></div>
+<div style="text-align:center;">
+<button class="rollButton" onclick="rollProblem()">🎲 Roll Problem</button>
+</div>
 
-        <button onclick="restartGame()">Play Again</button>
-    </div>
+<div class="game-card">
+
+<h2>Original Length</h2>
+<div id="length" class="value">?</div>
+
+<h2>Scale Factor</h2>
+<div id="factor" class="value">?</div>
+
+<div class="questionArea">
+
+<p><strong>What is the scaled length?</strong></p>
+
+<br>
+
+<input id="answer" type="number" step="0.01" placeholder="Your answer">
+
+<br><br>
+
+<button onclick="checkAnswer()">Submit Answer</button>
+
+</div>
+
+<div id="bonusMessage"></div>
+<div id="feedback"></div>
+<div id="explanation"></div>
+
+</div>
+
+<div id="gameOver">
+
+<h2>🏁 Game Over!</h2>
+
+<h3>Final Score:</h3>
+
+<h1 id="finalScore"></h1>
+
+<div id="finalBadge" class="badge"></div>
+
+<br>
+
+<button onclick="restartGame()">Play Again</button>
+
+</div>
 
 </div>
 
@@ -170,109 +265,150 @@
 const scaleFactors = [
     {text:"1/2", value:0.5},
     {text:"2/3", value:2/3},
-    {text:"3/4", value:3/4},
+    {text:"3/4", value:0.75},
     {text:"3/2", value:1.5},
     {text:"2", value:2},
     {text:"3", value:3}
 ];
 
+const bonusFactors = [
+    {text:"1/2", value:0.5},
+    {text:"1", value:1},
+    {text:"1 1/2", value:1.5},
+    {text:"2", value:2}
+];
+
 let round = 1;
 let score = 0;
+let streak = 0;
 
 let currentLength;
-let currentFactorText;
-let currentFactorValue;
+let currentScaleFactor;
+let currentScaleText;
 let correctAnswer;
-let pointsAvailable;
 
-function newRound() {
+function rollProblem(){
 
     if(round > 10){
-        endGame();
         return;
     }
 
+    document.getElementById("bonusMessage").innerHTML = "";
     document.getElementById("feedback").innerHTML = "";
     document.getElementById("explanation").innerHTML = "";
     document.getElementById("answer").value = "";
 
-    currentLength = Math.floor(Math.random() * 12) + 1;
+    currentLength = Math.floor(Math.random()*12)+1;
 
     let factor =
-        scaleFactors[Math.floor(Math.random() * scaleFactors.length)];
+        scaleFactors[Math.floor(Math.random()*scaleFactors.length)];
 
-    currentFactorText = factor.text;
-    currentFactorValue = factor.value;
+    currentScaleFactor = factor.value;
+    currentScaleText = factor.text;
 
-    correctAnswer = currentLength * currentFactorValue;
+    correctAnswer = currentLength * currentScaleFactor;
 
-    pointsAvailable = Math.round(currentFactorValue * 10);
+    document.getElementById("length").textContent =
+        currentLength;
 
-    document.getElementById("length").textContent = currentLength;
-    document.getElementById("factor").textContent = currentFactorText;
+    document.getElementById("factor").textContent =
+        currentScaleText;
 }
 
-function checkAnswer() {
+function checkAnswer(){
 
     if(currentLength === undefined){
-        alert("Roll the dice first!");
+        alert("Roll a problem first!");
         return;
     }
 
-    let studentAnswer =
+    const studentAnswer =
         parseFloat(document.getElementById("answer").value);
 
     if(isNaN(studentAnswer)){
-        alert("Please enter a number.");
+        alert("Enter an answer.");
         return;
     }
 
-    let isCorrect =
+    let pointsEarned = 0;
+
+    const correct =
         Math.abs(studentAnswer - correctAnswer) < 0.01;
 
-    if(isCorrect){
+    if(correct){
 
-        score += pointsAvailable;
+        streak++;
+
+        pointsEarned = 10;
+
+        let bonusText = "";
+
+        if(streak % 3 === 0){
+
+            const bonus =
+                bonusFactors[Math.floor(Math.random()*bonusFactors.length)];
+
+            pointsEarned =
+                Math.round(10 * bonus.value);
+
+            bonusText =
+                `🔥 BONUS STREAK!  ${streak} correct in a row!<br>
+                 Bonus Scale Factor: ${bonus.text}<br>
+                 Points earned this round: ${pointsEarned}`;
+
+            document.getElementById("bonusMessage").innerHTML =
+                bonusText;
+        }
+
+        score += pointsEarned;
 
         document.getElementById("feedback").innerHTML =
-            "<span class='correct'>✅ Correct! +" +
-            pointsAvailable +
-            " points</span>";
+            `<span class="correct">
+            ✅ Correct! +${pointsEarned} points
+            </span>`;
 
-    } else {
+    }
+    else{
+
+        streak = 0;
 
         document.getElementById("feedback").innerHTML =
-            "<span class='wrong'>❌ Not quite.</span>";
+            `<span class="incorrect">
+            ❌ Not quite. Streak reset.
+            </span>`;
     }
 
     document.getElementById("score").textContent = score;
+    document.getElementById("streak").textContent = streak;
 
     document.getElementById("explanation").innerHTML =
-        "<strong>Explanation:</strong><br>" +
-        currentLength +
-        " × " +
-        currentFactorText +
-        " = " +
-        formatNumber(correctAnswer) +
-        "<br><br>" +
-        "Because the scale factor is <strong>" +
-        currentFactorText +
-        "</strong>, multiply the original length by the scale factor.";
-
-    round++;
-    document.getElementById("round").textContent =
-        Math.min(round, 10);
+        `<strong>Explanation:</strong><br><br>
+        ${currentLength} × ${currentScaleText}
+        = ${formatAnswer(correctAnswer)}
+        <br><br>
+        To find a scaled length, multiply the original length by the scale factor.`;
 
     currentLength = undefined;
+
+    round++;
+
+    if(round > 10){
+
+        setTimeout(endGame,1200);
+
+    } else {
+
+        document.getElementById("round").textContent = round;
+    }
 }
 
-function formatNumber(num){
+function formatAnswer(num){
 
     if(Number.isInteger(num)){
         return num;
     }
 
-    return Number(num.toFixed(2));
+    return num.toFixed(2);
 }
 
 function endGame(){
@@ -283,46 +419,45 @@ function endGame(){
 
     let badge = "";
 
-    if(score >= 200){
+    if(score >= 120){
         badge = "🚀 Scale the Storch Champion!";
     }
-    else if(score >= 150){
+    else if(score >= 100){
         badge = "🔥 Scale Master!";
     }
-    else if(score >= 100){
+    else if(score >= 80){
         badge = "⭐⭐⭐ Scale Expert!";
     }
-    else if(score >= 50){
+    else if(score >= 60){
         badge = "⭐⭐ Scale Explorer!";
     }
     else{
         badge = "⭐ Scale Apprentice!";
     }
 
-    document.getElementById("badge").textContent = badge;
-
-    document.getElementById("rollButton").disabled = true;
+    document.getElementById("finalBadge").textContent = badge;
 }
 
 function restartGame(){
 
     round = 1;
     score = 0;
+    streak = 0;
 
     currentLength = undefined;
 
     document.getElementById("round").textContent = "1";
     document.getElementById("score").textContent = "0";
+    document.getElementById("streak").textContent = "0";
 
     document.getElementById("length").textContent = "?";
     document.getElementById("factor").textContent = "?";
 
     document.getElementById("feedback").innerHTML = "";
     document.getElementById("explanation").innerHTML = "";
+    document.getElementById("bonusMessage").innerHTML = "";
 
     document.getElementById("gameOver").style.display = "none";
-
-    document.getElementById("rollButton").disabled = false;
 }
 
 </script>
