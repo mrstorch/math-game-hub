@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scale the Storch!</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #87ceeb, #ffffff);
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 0 20px rgba(0,0,0,.2);
+    }
+
+    h1 {
+        color: #ff6600;
+        margin-bottom: 5px;
+    }
+
+    h2 {
+        color: #004a99;
+        margin-top: 0;
+    }
+
+    .scoreboard {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin: 20px 0;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    .card {
+        background: #f4f8ff;
+        padding: 20px;
+        border-radius: 12px;
+        margin: 20px 0;
+        border: 2px solid #d0e3ff;
+    }
+
+    .value {
+        font-size: 2em;
+        color: #004a99;
+        margin: 10px;
+    }
+
+    button {
+        background: #ff6600;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 1em;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 8px;
+    }
+
+    button:hover {
+        background: #e05500;
+    }
+
+    input {
+        padding: 10px;
+        font-size: 1.1em;
+        width: 180px;
+        text-align: center;
+    }
+
+    #feedback {
+        margin-top: 15px;
+        font-size: 1.1em;
+        font-weight: bold;
+    }
+
+    #explanation {
+        margin-top: 15px;
+        background: #fff8e6;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    #gameOver {
+        display: none;
+        margin-top: 25px;
+    }
+
+    .badge {
+        font-size: 1.5em;
+        margin-top: 10px;
+    }
+
+    .correct {
+        color: green;
+    }
+
+    .wrong {
+        color: red;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🎲 Scale the Storch! 📐</h1>
+    <h2>Roll. Scale. Score.</h2>
+
+    <div class="scoreboard">
+        <div>Round: <span id="round">1</span>/10</div>
+        <div>Score: <span id="score">0</span></div>
+    </div>
+
+    <button id="rollButton" onclick="newRound()">Roll Dice</button>
+
+    <div class="card">
+        <div>
+            Original Length
+            <div id="length" class="value">?</div>
+        </div>
+
+        <div>
+            Scale Factor
+            <div id="factor" class="value">?</div>
+        </div>
+    </div>
+
+    <p><strong>What is the scaled length?</strong></p>
+
+    <input type="text" id="answer" placeholder="Enter answer">
+
+    <br>
+
+    <button onclick="checkAnswer()">Submit Answer</button>
+
+    <div id="feedback"></div>
+    <div id="explanation"></div>
+
+    <div id="gameOver">
+        <h2>Game Complete!</h2>
+
+        <p>Your Final Score:</p>
+
+        <h1 id="finalScore"></h1>
+
+        <div id="badge" class="badge"></div>
+
+        <button onclick="restartGame()">Play Again</button>
+    </div>
+
+</div>
+
+<script>
+
+const scaleFactors = [
+    {text:"1/2", value:0.5},
+    {text:"2/3", value:2/3},
+    {text:"3/4", value:3/4},
+    {text:"3/2", value:1.5},
+    {text:"2", value:2},
+    {text:"3", value:3}
+];
+
+let round = 1;
+let score = 0;
+
+let currentLength;
+let currentFactorText;
+let currentFactorValue;
+let correctAnswer;
+let pointsAvailable;
+
+function newRound() {
+
+    if(round > 10){
+        endGame();
+        return;
+    }
+
+    document.getElementById("feedback").innerHTML = "";
+    document.getElementById("explanation").innerHTML = "";
+    document.getElementById("answer").value = "";
+
+    currentLength = Math.floor(Math.random() * 12) + 1;
+
+    let factor =
+        scaleFactors[Math.floor(Math.random() * scaleFactors.length)];
+
+    currentFactorText = factor.text;
+    currentFactorValue = factor.value;
+
+    correctAnswer = currentLength * currentFactorValue;
+
+    pointsAvailable = Math.round(currentFactorValue * 10);
+
+    document.getElementById("length").textContent = currentLength;
+    document.getElementById("factor").textContent = currentFactorText;
+}
+
+function checkAnswer() {
+
+    if(currentLength === undefined){
+        alert("Roll the dice first!");
+        return;
+    }
+
+    let studentAnswer =
+        parseFloat(document.getElementById("answer").value);
+
+    if(isNaN(studentAnswer)){
+        alert("Please enter a number.");
+        return;
+    }
+
+    let isCorrect =
+        Math.abs(studentAnswer - correctAnswer) < 0.01;
+
+    if(isCorrect){
+
+        score += pointsAvailable;
+
+        document.getElementById("feedback").innerHTML =
+            "<span class='correct'>✅ Correct! +" +
+            pointsAvailable +
+            " points</span>";
+
+    } else {
+
+        document.getElementById("feedback").innerHTML =
+            "<span class='wrong'>❌ Not quite.</span>";
+    }
+
+    document.getElementById("score").textContent = score;
+
+    document.getElementById("explanation").innerHTML =
+        "<strong>Explanation:</strong><br>" +
+        currentLength +
+        " × " +
+        currentFactorText +
+        " = " +
+        formatNumber(correctAnswer) +
+        "<br><br>" +
+        "Because the scale factor is <strong>" +
+        currentFactorText +
+        "</strong>, multiply the original length by the scale factor.";
+
+    round++;
+    document.getElementById("round").textContent =
+        Math.min(round, 10);
+
+    currentLength = undefined;
+}
+
+function formatNumber(num){
+
+    if(Number.isInteger(num)){
+        return num;
+    }
+
+    return Number(num.toFixed(2));
+}
+
+function endGame(){
+
+    document.getElementById("gameOver").style.display = "block";
+
+    document.getElementById("finalScore").textContent = score;
+
+    let badge = "";
+
+    if(score >= 200){
+        badge = "🚀 Scale the Storch Champion!";
+    }
+    else if(score >= 150){
+        badge = "🔥 Scale Master!";
+    }
+    else if(score >= 100){
+        badge = "⭐⭐⭐ Scale Expert!";
+    }
+    else if(score >= 50){
+        badge = "⭐⭐ Scale Explorer!";
+    }
+    else{
+        badge = "⭐ Scale Apprentice!";
+    }
+
+    document.getElementById("badge").textContent = badge;
+
+    document.getElementById("rollButton").disabled = true;
+}
+
+function restartGame(){
+
+    round = 1;
+    score = 0;
+
+    currentLength = undefined;
+
+    document.getElementById("round").textContent = "1";
+    document.getElementById("score").textContent = "0";
+
+    document.getElementById("length").textContent = "?";
+    document.getElementById("factor").textContent = "?";
+
+    document.getElementById("feedback").innerHTML = "";
+    document.getElementById("explanation").innerHTML = "";
+
+    document.getElementById("gameOver").style.display = "none";
+
+    document.getElementById("rollButton").disabled = false;
+}
+
+</script>
+
+</body>
+</html>
